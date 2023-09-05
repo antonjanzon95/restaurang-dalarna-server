@@ -8,6 +8,8 @@ router.get('/', async (req: Request, res: Response) => {
   
   try {
     const tables = await TableModel.find();
+    console.log('Sending tables');
+    
     res.status(200).json(tables);
   
   } catch (error) {

@@ -21,6 +21,7 @@ exports.router = express_1.default.Router();
 exports.router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const tables = yield TableModel_1.default.find();
+        console.log('Sending tables');
         res.status(200).json(tables);
     }
     catch (error) {

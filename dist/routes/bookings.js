@@ -14,8 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = __importDefault(require("express"));
+const BookingModel_1 = __importDefault(require("../models/BookingModel"));
+const ServerResponse_1 = __importDefault(require("../models/ServerResponse"));
 exports.router = express_1.default.Router();
 /* GET home page. */
 exports.router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('BookingsHej');
+    try {
+        const bookings = yield BookingModel_1.default.find();
+        res.status(200).json(bookings);
+    }
+    catch (error) {
+        res.status(500).json(new ServerResponse_1.default(error, false));
+    }
 }));
