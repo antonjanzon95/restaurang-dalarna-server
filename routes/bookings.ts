@@ -41,6 +41,8 @@ router.post('/month', async (req: Request, res: Response) => {
 
 router.post('/new', async (req: Request, res: Response) => {
   const { bookingDetails } = req.body;
+  console.log('BookingDetails: ', bookingDetails);
+  
 
   try {
     const bookingCount = await BookingModel.countDocuments({
@@ -64,6 +66,8 @@ router.post('/new', async (req: Request, res: Response) => {
 
     return res.status(201).json(newBooking);
   } catch (error) {
+    console.log(error);
+    
     return res.status(500).json(new ServerResponse(error as string, false));
   }
 });
