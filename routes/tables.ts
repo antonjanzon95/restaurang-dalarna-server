@@ -6,14 +6,16 @@ export const router = express.Router();
 
 /* /tables */
 router.post('/', async (req: Request, res: Response) => {
+  console.log('----------');
+  
   const { time } = req.body;
-  console.log(time);
-
-  // Fri Sep 08 2023 18:00:00 GMT+0200 (Central European Summer Time)
+  console.log('Time: ', time);
 
   try {
     const tables = await TableModel.find();
-    const bookings = await BookingModel.find({ date: time });
+    const bookings = await BookingModel.find({ time });
+
+    console.log('Bookings:', bookings, 'Time from body: ', time);
 
     for (let index = 0; index < tables.length; index++) {
       const table = tables[index];
@@ -23,7 +25,6 @@ router.post('/', async (req: Request, res: Response) => {
 
       table.isBooked = foundBookings.length > 0;
     }
-    console.log(tables);
 
     res.status(200).json(tables);
   } catch (error) {
