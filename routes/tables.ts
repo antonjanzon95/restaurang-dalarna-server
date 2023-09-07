@@ -9,16 +9,19 @@ router.post('/', async (req: Request, res: Response) => {
   const { time } = req.body;
   console.log(time);
 
+  // Fri Sep 08 2023 18:00:00 GMT+0200 (Central European Summer Time)
+
   try {
     const tables = await TableModel.find();
+    const bookings = await BookingModel.find({ date: time });
 
     for (let index = 0; index < tables.length; index++) {
       const table = tables[index];
-      const bookings = await BookingModel.find({
-        tableNumber: table.tableNumber,
-      });
+      const foundBookings = bookings.filter(
+        (booking) => booking.tableNumber === table.tableNumber
+      );
 
-      table.isBooked = bookings.some((booking) => booking.date === time);
+      table.isBooked = foundBookings.length > 0;
     }
     console.log(tables);
 
