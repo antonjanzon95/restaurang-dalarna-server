@@ -67,3 +67,18 @@ router.post('/new', async (req: Request, res: Response) => {
     return res.status(500).json(new ServerResponse(error as string, false));
   }
 });
+
+router.delete('/delete/:bookingId', async (req: Request, res: Response) => {
+  const bookingId = req.params.bookingId;
+
+  try {
+    const booking = await BookingModel.findByIdAndDelete(bookingId);
+
+    if (!booking)
+      return res.status(404).json({ message: 'Booking not found.' });
+
+    return res.status(200).json({ message: 'Booking successfully deleted.' });
+  } catch (error) {
+    return res.status(500).json(new ServerResponse(error as string, false));
+  }
+});
