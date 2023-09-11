@@ -31,8 +31,4 @@ app.listen('3000', () => {
   console.log('Server listening on port 3000...');
 });
 
-// console.log(
-//   new Date('2023-09-08T16:00:00.000+00:00').toString()
-// );
-
 module.exports = app;

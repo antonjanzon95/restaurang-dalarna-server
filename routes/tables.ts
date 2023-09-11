@@ -6,16 +6,15 @@ export const router = express.Router();
 
 /* /tables */
 router.post('/', async (req: Request, res: Response) => {
-  console.log('----------');
   
   const { time } = req.body;
-  console.log('Time: ', time);
+  console.log(time);
+  
 
   try {
     const tables = await TableModel.find();
     const bookings = await BookingModel.find({ time });
 
-    console.log('Bookings:', bookings, 'Time from body: ', time);
 
     for (let index = 0; index < tables.length; index++) {
       const table = tables[index];

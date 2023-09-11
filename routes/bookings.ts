@@ -2,15 +2,23 @@ import express, { Request, Response } from 'express';
 import BookingModel from '../models/BookingModel';
 import ServerResponse from '../models/ServerResponse';
 import { adminCheck } from '../middlewares/adminCheck.middleware';
+import { IBooking } from '../models/IBooking';
 
 export const router = express.Router();
 
 // lägg till middleware
 router.post('/day', async (req: Request, res: Response) => {
-  const { date } = req.body;
+  const { time } = req.body;
+
+  const startOfDay = new Date(time).setHours(0, 0, 0, 0);
+  const endOfDay = new Date(time).setHours(23, 59, 59);
 
   try {
-    const bookings = await BookingModel.find({ date: date });
+    const bookings = await BookingModel.find({
+      time: { $gte: startOfDay, $lt: endOfDay },
+    });
+
+    console.log(bookings);
 
     return res.status(200).json(bookings);
   } catch (error) {
@@ -41,7 +49,6 @@ router.post('/month', async (req: Request, res: Response) => {
 
 router.post('/new', async (req: Request, res: Response) => {
   const { bookingDetails } = req.body;
-  console.log('BookingDetails: ', bookingDetails);
 
   try {
     const bookingCount = await BookingModel.countDocuments({
@@ -84,4 +91,38 @@ router.delete('/delete/:bookingId', async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(500).json(new ServerResponse(error as string, false));
   }
+});
+
+router.put('/update', async (req, res) => {
+  console.log('req.body: ', req.body);
+  const {
+    _id,
+    email,
+    firstName,
+    lastName,
+    persons,
+    tableNumber,
+    time,
+  }: IBooking = req.body;
+
+  const updatedBooking = await BookingModel.findByIdAndUpdate(
+    _id,
+    {
+      email,
+      firstName,
+      lastName,
+      persons,
+      tableNumber,
+      time,
+    },
+    { new: true }
+  );
+
+  console.log(updatedBooking);
+
+  res
+    .status(200)
+    .json(
+      new ServerResponse('Updated booking successfully', true, updatedBooking)
+    );
 });
