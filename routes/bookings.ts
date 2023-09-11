@@ -27,7 +27,7 @@ router.post('/month', async (req: Request, res: Response) => {
 
   try {
     const bookings = await BookingModel.find({
-      date: {
+      time: {
         $gte: startDate,
         $lt: endDate,
       },
@@ -42,7 +42,6 @@ router.post('/month', async (req: Request, res: Response) => {
 router.post('/new', async (req: Request, res: Response) => {
   const { bookingDetails } = req.body;
   console.log('BookingDetails: ', bookingDetails);
-  
 
   try {
     const bookingCount = await BookingModel.countDocuments({
@@ -67,7 +66,7 @@ router.post('/new', async (req: Request, res: Response) => {
     return res.status(201).json(newBooking);
   } catch (error) {
     console.log(error);
-    
+
     return res.status(500).json(new ServerResponse(error as string, false));
   }
 });
@@ -81,7 +80,7 @@ router.delete('/delete/:bookingId', async (req: Request, res: Response) => {
     if (!booking)
       return res.status(404).json({ message: 'Booking not found.' });
 
-    return res.status(200).json({ message: 'Booking successfully deleted.' });
+    return res.status(200).json({ deletedId: bookingId });
   } catch (error) {
     return res.status(500).json(new ServerResponse(error as string, false));
   }
