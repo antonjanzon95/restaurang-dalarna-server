@@ -8,6 +8,7 @@ const BookingModel = new Schema({
   time: { type: Date, require: true },
   persons: { type: Number, require: true },
   tableNumber: { type: Number, require: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 export default mongoose.model('Booking', BookingModel, 'bookings');
