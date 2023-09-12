@@ -21,10 +21,10 @@ router.get('/:userId', async (req: Request, res: Response) => {
 
 // lägg till middleware
 router.post('/day', async (req: Request, res: Response) => {
-  const { time } = req.body;
+  const { date } = req.body;
 
-  const startOfDay = new Date(time).setHours(0, 0, 0, 0);
-  const endOfDay = new Date(time).setHours(23, 59, 59);
+  const startOfDay = new Date(date).setHours(0, 0, 0, 0);
+  const endOfDay = new Date(date).setHours(23, 59, 59);
 
   try {
     const bookings = await BookingModel.find({
