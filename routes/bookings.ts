@@ -1,10 +1,23 @@
 import express, { Request, Response } from 'express';
 import BookingModel from '../models/BookingModel';
 import ServerResponse from '../models/ServerResponse';
-import { adminCheck } from '../middlewares/adminCheck.middleware';
 import { IBooking } from '../models/IBooking';
+import UserModel from '../models/UserModel';
 
 export const router = express.Router();
+
+router.get('/:userId', async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  console.log(userId);
+
+  try {
+    const userBookings = await BookingModel.find({ userId: userId });
+
+    res.status(200).json(userBookings);
+  } catch (error) {
+    res.status(500).json(new ServerResponse('Failed to fetch bookings', false));
+  }
+});
 
 // lägg till middleware
 router.post('/day', async (req: Request, res: Response) => {
