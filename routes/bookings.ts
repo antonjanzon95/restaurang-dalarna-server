@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import BookingModel from '../models/BookingModel';
 import ServerResponse from '../models/ServerResponse';
 import { IBooking } from '../models/IBooking';
-import UserModel from '../models/UserModel';
 
 export const router = express.Router();
 
